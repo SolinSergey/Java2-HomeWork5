@@ -17,7 +17,7 @@ public class HomeWork5 {
         for (int i=0;i<SIZE;i++){
             arr[i] = (float)(arr[i] * Math.sin(0.2f + i / 5) * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2));
         }
-        System.out.println("One thread time: " + (System.currentTimeMillis() - startTime) + " ms.");
+        System.out.println("Время обсчета в один поток: " + (System.currentTimeMillis() - startTime) + " ms.");
         System.out.println();
     }
 
@@ -32,7 +32,7 @@ public class HomeWork5 {
         System.arraycopy(arr,0,a1,0,HALF);
         System.arraycopy(arr,HALF,a2,0,HALF);
         long delenie = System.currentTimeMillis()-startTime;
-        System.out.println("Разбивка на 2 массива: "+  delenie + " ms.");
+        System.out.println("Время разбивки на 2 массива: "+  delenie + " ms.");
         Thread thread1 = new Thread(() -> {
             long time1 = System.currentTimeMillis();
             for (int i = 0; i <HALF; i++) {
@@ -54,8 +54,11 @@ public class HomeWork5 {
         thread2.start();
         thread1.join();
         thread2.join();
+        long unionArray = System.currentTimeMillis();
         System.arraycopy(a1,0,arr,0,HALF);
         System.arraycopy(a2,0,arr,HALF,HALF);
+        unionArray=System.currentTimeMillis()-unionArray;
+        System.out.println("Время склейки 2-х массивов в 1: "+  unionArray + " ms.");
         System.out.println("Время обсчета в два потока: " + (System.currentTimeMillis() - startTime) + " ms.");
 
     }
