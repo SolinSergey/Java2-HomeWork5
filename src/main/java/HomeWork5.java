@@ -18,6 +18,7 @@ public class HomeWork5 {
             arr[i] = (float)(arr[i] * Math.sin(0.2f + i / 5) * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2));
         }
         System.out.println("One thread time: " + (System.currentTimeMillis() - startTime) + " ms.");
+        System.out.println();
     }
 
     public static void twoTread() throws InterruptedException {
@@ -30,15 +31,24 @@ public class HomeWork5 {
         long startTime=System.currentTimeMillis();
         System.arraycopy(arr,0,a1,0,HALF);
         System.arraycopy(arr,HALF,a2,0,HALF);
+        long delenie = System.currentTimeMillis()-startTime;
+        System.out.println("Разбивка на 2 массива: "+  delenie + " ms.");
         Thread thread1 = new Thread(() -> {
+            long time1 = System.currentTimeMillis();
             for (int i = 0; i <HALF; i++) {
                 a1[i] = (float)(a1[i] * Math.sin(0.2f + i / 5) * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2));
             }
+            time1=System.currentTimeMillis()-time1;
+            System.out.println("Обсчет 1-ой половины массива: "+  time1 + " ms.");
+
         });
         Thread thread2 = new Thread(() -> {
-            for (int i = 0; i <HALF; i++) {
-                a2[i] = (float)(a2[i] * Math.sin(0.2f + i / 5) * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2));
+            long time2 = System.currentTimeMillis();
+            for (int j = HALF; j <SIZE; j++) {
+                a2[j-HALF] = (float)(a2[j-HALF] * Math.sin(0.2f + j / 5) * Math.cos(0.2f + j / 5) * Math.cos(0.4f + j / 2));
             }
+            time2=System.currentTimeMillis()-time2;
+            System.out.println("Обсчет 2-ой половины массива: "+  time2 + " ms.");
         });
         thread1.start();
         thread2.start();
@@ -46,7 +56,7 @@ public class HomeWork5 {
         thread2.join();
         System.arraycopy(a1,0,arr,0,HALF);
         System.arraycopy(a2,0,arr,HALF,HALF);
-        System.out.println("Two thread time: " + (System.currentTimeMillis() - startTime) + " ms.");
+        System.out.println("Время обсчета в два потока: " + (System.currentTimeMillis() - startTime) + " ms.");
 
     }
 }
